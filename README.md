@@ -1,8 +1,6 @@
 # CustomTracker
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/custom_tracker`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This small gem is created to help saving data on some common events.
 
 ## Installation
 
@@ -22,7 +20,18 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To initialize new tracker simply do:
+
+```ruby
+tracker = CustomTracker::Tracker.new
+```
+
+TODO: Tracking
+
+Exporting saved data:
+```ruby
+tracker.csv(options) # => CSV
+```
 
 ## Development
 
