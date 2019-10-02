@@ -34,8 +34,8 @@ module CustomTracker
     #
     # @option options [Array<Symbol>] columns array of column names all the entries
     #   which are added to this table are required to store it.
-    # @option options [#call] saving_block callable object which must accept {Array<Entry>}
-    #   and save it somewhere.
+    # @option options [#call] saving_block callable object which must accept
+    #   +Array<Entry>+ - array of entries to save and +Table+ - +self+
     def initialize(options)
       @columns = options[:columns].select { |s| s.is_a? Symbol }
       @columns.freeze
@@ -50,7 +50,7 @@ module CustomTracker
     end
 
     ##
-    # @param [Entry]
+    # @param entry [Entry]
     # 
     # @return [Boolean] whether this entry is acceptable.
     def accepts?(entry)
@@ -60,13 +60,13 @@ module CustomTracker
     ##
     # Checks whether this entry is acceptable and saves it.
     #
-    # @param entry [Entry, Hash<Symbol, Object>] if +Hash+ provided, {Entry} will
+    # @param entry [Entry, Hash<Symbol, Object>] if +Hash+ provided, +Entry+ will
     #   be created automatically with {Entry#initialize}.
     # @param options [Hash]
     #
     # @option options [Boolean] instant_save if enabled {Table#save} will be called after adding.
     #
-    # @return [Entry, nil] {Entry} if it was saved or +nil+ if it wasn't.
+    # @return [Entry, nil] +Entry+ if it was saved or +nil+ if it wasn't.
     def record(entry, options = {})
       entry = Entry.new(entry) if entry.is_a? Hash
 
@@ -86,7 +86,7 @@ module CustomTracker
     #
     # @return [Integer] amount of saved entries.
     def save
-      @saving_block.call(@unsaved_entries)
+      @saving_block.call(@unsaved_entries, self)
       re = @unsaved_entries.size
       @size_saved += re
       @unsaved_entries.clear

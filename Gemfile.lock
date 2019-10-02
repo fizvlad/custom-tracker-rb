@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    custom_tracker (0.1.0)
+    custom_tracker (1.0.0)
       csv (~> 3.1)
       date (~> 2.0)
 

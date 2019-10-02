@@ -5,7 +5,7 @@ include CustomTracker
 puts "Spawning new table"
 table = Table.new(
   columns: [:num, :zero],
-  saving_block: Proc.new do |arr|
+  saving_block: Proc.new do |arr, t|
     puts "Saving table"
     CSV.open("table.csv", "a") do |csv|
       arr.each do |entry|

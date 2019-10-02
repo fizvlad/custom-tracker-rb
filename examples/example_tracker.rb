@@ -4,9 +4,11 @@ include CustomTracker
 
 puts "Spawning new tracker"
 tracker = Tracker.new(
-  saving_block: Proc.new do |sym, arr|
+  saving_block: Proc.new do |arr, sym, t|
     puts "Pretending to save #{arr.size} entries in #{sym} table"
-    puts arr
+    arr.each do |entry|
+      puts  "#{entry.id} at #{entry.time}: " + t.columns.map { |column| entry[column] }.join(", ")
+    end
   end
 )
 

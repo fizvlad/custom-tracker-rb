@@ -1,3 +1,7 @@
 module CustomTracker
-  VERSION = "0.1.0"
+
+  ##
+  # Gem version.
+  VERSION = "1.0.0"
+
 end

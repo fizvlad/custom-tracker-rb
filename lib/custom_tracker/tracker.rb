@@ -11,6 +11,8 @@ module CustomTracker
     end
 
     ##
+    # Access stored table.
+    #
     # @return [Table]
     def [](sym)
       @tables[sym]
@@ -21,8 +23,9 @@ module CustomTracker
     #
     # @param options [Hash]
     #
-    # @option options [#call] saving_block callable object which must accept two
-    #   parameters: [String] - name of table and {Array<Entry>} - entries to save.
+    # @option options [#call] saving_block callable object which must accept following
+    #   parameters: +Array<Entry>+ - entries to save, +Symbol+ - name of table and
+    #   +Table+ for which this block will be called.
     def initialize(options)
       @saving_block = options[:saving_block]
       unless @saving_block.respond_to? :call
@@ -47,8 +50,8 @@ module CustomTracker
       raise ArgumentError, "This table already exists", caller if @tables.has_key? sym
       table = Table.new(
         options.merge(
-          saving_block: Proc.new do |arr|
-            @saving_block.call(sym, arr)
+          saving_block: Proc.new do |arr, table_local|
+            @saving_block.call(arr, sym, table_local)
           end
         )
       )
@@ -73,7 +76,7 @@ module CustomTracker
     # @param table_name [Symbol] name of table.
     # @param entry [Entry]
     #
-    # @return [Entry, nil] {Entry} if it was saved or +nil+ if it wasn't.
+    # @return [Entry, nil] +Entry+ if it was saved or +nil+ if it wasn't.
     def record(table_name, entry)
       @tables[table_name].record entry
     end

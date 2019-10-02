@@ -5,7 +5,7 @@ include CustomTracker
 puts "Spawning new table"
 table = Table.new(
   columns: [:num, :zero],
-  saving_block: Proc.new do |arr|
+  saving_block: Proc.new do |arr, t|
     puts "Pretending to save #{arr.size} entries:"
     puts arr
   end
