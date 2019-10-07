@@ -39,10 +39,7 @@ module CustomTracker
     # Create new table and add it to handling.
     #
     # @param sym [Symbol]
-    # @param options [Hash]
-    #
-    # @option options [Array<Symbol>] columns array of column names all the entries
-    #   which are added to this table are required to store it.
+    # @param options [Hash] options which will be passed to {Table.initialize}.
     #
     # @return [Table] created table.
     def new_table(sym, options)

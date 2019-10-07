@@ -35,7 +35,9 @@ module CustomTracker
     # @option options [Array<Symbol>] columns array of column names all the entries
     #   which are added to this table are required to store it.
     # @option options [#call] saving_block callable object which must accept
-    #   +Array<Entry>+ - array of entries to save and +Table+ - +self+
+    #   +Array<Entry>+ - array of entries to save and +Table+ - +self+.
+    # @option options [Integer, nil] autosave (nil) if +Integer+ provided data will be
+    #   automatically saved if amount of unsaved entries reach specified value.  
     def initialize(options)
       @columns = options[:columns].select { |s| s.is_a? Symbol }
       @columns.freeze
@@ -44,6 +46,8 @@ module CustomTracker
       unless @saving_block.respond_to? :call
         raise ArgumentError, "saving_block is not responding to call method!", caller
       end
+
+      @autosave = options[:autosave] ? options[:autosave].to_i : nil
 
       @size_saved = 0
       @unsaved_entries = []
@@ -75,7 +79,7 @@ module CustomTracker
 
       if accepts? entry
         @unsaved_entries.push(entry)
-        save if instant_save
+        save if instant_save || (@autosave && size_unsaved >= @autosave)
         entry
       else
         nil
