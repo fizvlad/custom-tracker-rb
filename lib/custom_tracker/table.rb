@@ -47,6 +47,7 @@ module CustomTracker
 
       @size_saved = 0
       @unsaved_entries = []
+      @mutex = Mutex.new
     end
 
     ##
@@ -84,14 +85,18 @@ module CustomTracker
     ##
     # Saves all unsaved entries.
     #
+    # Execution of this method is syncronized with +Mutex+ local to current table.
+    #
     # @return [Integer] amount of saved entries.
     def save
-      @saving_block.call(@unsaved_entries, self)
-      re = @unsaved_entries.size
-      @size_saved += re
-      @unsaved_entries.clear
+      @mutex.synchronize do
+        @saving_block.call(@unsaved_entries, self)
+        re = @unsaved_entries.size
+        @size_saved += re
+        @unsaved_entries.clear
 
-      re
+        re
+      end
     end
 
   end
